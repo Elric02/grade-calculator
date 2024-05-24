@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+    <script type="text/javascript">
+		var testScore = 0;
+		var examScore = 0;
+		var bonus = 0;
+		var finalScore = 0;
+		var finalGrade = 0;
+		
+        function calculateGrade() {
+			bonus = 0;
+			
+			var tests = [];
+			for (var i = 1; i <= 4; i++) {
+				tests.push(Number(document.getElementById("test"+i).value));
+			}
+			
+			if (tests[1] > tests[0]) {
+				bonus += 3;
+			}
+			if (tests[2] > tests[1]) {
+				bonus += 3;
+			}
+			if (tests[3] > tests[2]) {
+				bonus += 3;
+			}
+			if (bonus == 9) {
+				bonus++;
+			}
+			
+			if (Number(document.getElementById("projects").value) == 7) {
+				bonus += 10;
+			} else if (Number(document.getElementById("projects").value) == 6) {
+				bonus += 6;
+			} else if (Number(document.getElementById("projects").value) == 5) {
+				bonus += 3;
+			}
+			
+            tests.splice(tests.indexOf(Math.min(...tests)), 1);
+			testScore = (tests[0] + tests[1] + tests[2]) /60 *25;
+			
+			examScore = Number(document.getElementById("exam").value) /40 *75
+			
+			finalScore = testScore + examScore + bonus;
+			finalGrade = finalScore /100 *5 +1;
+			if (finalGrade >= 6) {
+				finalGrade = 6;
+			}
+
+            document.getElementById("finalscore").innerHTML = finalScore;
+			document.getElementById("finalgrade1").innerHTML = finalGrade;
+			document.getElementById("finalgrade2").innerHTML = Math.round( (finalGrade*10) /5) *5 /10;
+        }
+    </script>
+</head>
+<body>
+	<p>How many projects did you pass:</p><input type="number" id="projects" name="projects" onchange="calculateGrade()" value="0" max="7" min="0"><span>/7</span>
+    <p>Score at test 1:</p><input type="number" id="test1" name="test1" onchange="calculateGrade()" value="0" max="20" min="0"><span>/20</span>
+    <p>Score at test 2:</p><input type="number" id="test2" name="test2" onchange="calculateGrade()" value="0" max="20" min="0"><span>/20</span>
+    <p>Score at test 3:</p><input type="number" id="test3" name="test3" onchange="calculateGrade()" value="0" max="20" min="0"><span>/20</span>
+    <p>Score at test 4:</p><input type="number" id="test4" name="test4" onchange="calculateGrade()" value="0" max="20" min="0"><span>/20</span>
+    <p>Score at exam:</p><input type="number" id="exam" name="exam" onchange="calculateGrade()" value="0" max="40"><span>/40</span>
+    <br>
+    <p>Final score: <b id="finalscore"></b><span>/100</span></p>
+	<p>Final grade (with the [%]*5+1 scale): <b id="finalgrade1"></b><span>/6</span></p>
+	<p>Final grade (rounded): <b id="finalgrade2"></b><span>/6</span></p>
+</body>
+</html>
